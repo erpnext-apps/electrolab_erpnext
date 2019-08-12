@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include electrolab_erpnext *.css
+recursive-include electrolab_erpnext *.csv
+recursive-include electrolab_erpnext *.html
+recursive-include electrolab_erpnext *.ico
+recursive-include electrolab_erpnext *.js
+recursive-include electrolab_erpnext *.json
+recursive-include electrolab_erpnext *.md
+recursive-include electrolab_erpnext *.png
+recursive-include electrolab_erpnext *.py
+recursive-include electrolab_erpnext *.svg
+recursive-include electrolab_erpnext *.txt
+recursive-exclude electrolab_erpnext *.pyc
