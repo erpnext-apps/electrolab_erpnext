@@ -3,14 +3,13 @@ from __future__ import unicode_literals
 from . import __version__ as app_version
 
 app_name = "electrolab_erpnext"
-app_title = "electrolab_erpnext"
+app_title = "Electrolab Erpnext"
 app_publisher = "Frappe"
 app_description = "Electrolab erpnext app"
 app_icon = "octicon octicon-file-directory"
 app_color = "grey"
 app_email = "info@frappe.io"
 app_license = "MIT"
-fixtures = ["Custom Field", "Custom Script"]
 
 # Includes in <head>
 # ------------------
@@ -27,7 +26,9 @@ fixtures = ["Custom Field", "Custom Script"]
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-# doctype_js = {"doctype" : "public/js/doctype.js"}
+doctype_js = {
+    "Payment Order" : "public/js/Payment Order.js"
+}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}

@@ -5,10 +5,10 @@ from frappe import _
 def get_data():
 	return [
 		{
-			"module_name": "electrolab_erpnext",
+			"module_name": "Electrolab Erpnext",
 			"color": "grey",
 			"icon": "octicon octicon-file-directory",
 			"type": "module",
-			"label": _("electrolab_erpnext")
+			"label": _("Electrolab Erpnext")
 		}
 	]

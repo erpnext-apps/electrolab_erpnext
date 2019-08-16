@@ -1,1 +1,1 @@
-electrolab_erpnext
+Electrolab Erpnext

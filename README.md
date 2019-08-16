@@ -1,4 +1,4 @@
-## electrolab_erpnext
+## Electrolab Erpnext
 
 Electrolab erpnext app
 
