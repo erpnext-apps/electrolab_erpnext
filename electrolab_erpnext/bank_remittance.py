@@ -86,16 +86,9 @@ def get_detail_row(ref_doc, payment_entry, company_email):
 	supplier_bank_details = frappe.get_cached_doc('Bank Account', ref_doc.bank_account)
 	company_bank_acc_no = frappe.db.get_value("Bank Account", {'name': payment_entry.bank_account}, ['bank_account_no'])
 
-	addr_link = frappe.db.get_value('Dynamic Link',
-		{
-		'link_doctype': 'Supplier',
-		'link_name': 'Sample Supplier',
-		'parenttype':'Address',
-		'parent': ('like', '%-Billing')
-		}, 'parent')
+	addr = get_primary_address(ref_doc.supplier)
 
-	supplier_billing_address = frappe.get_cached_doc('Address', addr_link)
-	email = ','.join(filter(None, [supplier_billing_address.email_id, company_email]))
+	email = ','.join(filter(None, [addr.email_id, company_email]))
 
 	detail = OrderedDict(
 		record_identifier='D',
@@ -117,16 +110,16 @@ def get_detail_row(ref_doc, payment_entry, company_email):
 		beneficiary_acc_no=validate_information(supplier_bank_details, "bank_account_no", 20),
 		location='',
 		print_location='',
-		beneficiary_address_1=validate_field_size(sanitize_data(cstr(supplier_billing_address.address_line1), ' '), " Beneficiary Address 1", 50),
-		beneficiary_address_2=validate_field_size(sanitize_data(cstr(supplier_billing_address.address_line2), ' '), " Beneficiary Address 2", 50),
+		beneficiary_address_1=validate_field_size(sanitize_data(cstr(addr.address_line1), ' '), " Beneficiary Address 1", 50),
+		beneficiary_address_2=validate_field_size(sanitize_data(cstr(addr.address_line2), ' '), " Beneficiary Address 2", 50),
 		beneficiary_address_3='',
 		beneficiary_address_4='',
 		beneficiary_address_5='',
-		beneficiary_city=validate_field_size(cstr(supplier_billing_address.city), "Beneficiary City", 20),
-		beneficiary_zipcode=validate_field_size(cstr(supplier_billing_address.pincode), "Pin Code", 6),
-		beneficiary_state=validate_field_size(cstr(supplier_billing_address.state), "Beneficiary State", 20),
+		beneficiary_city=validate_field_size(cstr(addr.city), "Beneficiary City", 20),
+		beneficiary_zipcode=validate_field_size(cstr(addr.pincode), "Pin Code", 6),
+		beneficiary_state=validate_field_size(cstr(addr.state), "Beneficiary State", 20),
 		beneficiary_email=cstr(email)[:255],
-		beneficiary_mobile=validate_field_size(cstr(supplier_billing_address.phone), "Beneficiary Mobile", 10),
+		beneficiary_mobile=validate_field_size(cstr(addr.phone), "Beneficiary Mobile", 10),
 		payment_details_1='',
 		payment_details_2='',
 		payment_details_3='',
@@ -193,3 +186,24 @@ def validate_field_size(val, label, max_size):
 	if len(cstr(val)) > max_size:
 		frappe.throw(_("{0} field is limited to size {1}".format(label, max_size)))
 	return cstr(val)
+
+def get_primary_address(supplier):
+
+	address_list = frappe._dict(frappe.db.sql('''
+		Select
+			addr.name, addr.is_primary_address 
+		FROM `tabDynamic Link` dl, `tabAddress` addr 
+		WHERE
+			dl.link_name=%s
+			and dl.parent = addr.name
+			and (addr.address_type='Billing' or addr.is_primary_address = 1)''', (supplier)))
+
+	if not address_list:
+		frappe.throw(_('Please assign a billing address for the supplier {0} and try again').format(supplier))
+
+	addr = next(iter(address_list[0]))
+	for address, primary_addr in address_list:
+		if primary_addr:
+			addr = address
+
+	return frappe.get_cached_doc('Address', addr)
