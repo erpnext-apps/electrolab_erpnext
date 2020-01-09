@@ -8,11 +8,12 @@ frappe.ui.form.on('Payment Order', {
 	},
 	generate_text_and_download_file: (frm) => {
 		return frappe.call({
-			method: "electrolab_erpnext.electrolab_erpnext.bank_remittance.generate_report",
+			method: "electrolab_erpnext.bank_remittance.generate_report",
 			args: {
 				name: frm.doc.name
 			},
 			freeze: true,
+			freeze_message: __('Generating File'),
 			callback: function(r) {
 				{
 					frm.reload_doc();
