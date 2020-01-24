@@ -7,6 +7,7 @@ import frappe
 from frappe.model.document import Document
 from frappe.utils import cint,cstr, today
 from frappe import _
+from frappe.utils import get_link_to_form
 import re
 import datetime
 from collections import OrderedDict
@@ -176,15 +177,19 @@ def validate_amount(val, max_int_size):
 def validate_information(obj, attr, max_size):
 	''' Checks if the information is not set in the system and is within the size '''
 	if hasattr(obj, attr):
-		return validate_field_size(getattr(obj, attr), frappe.unscrub(attr), max_size)
+		form_link = get_link_to_form(obj.doctype, obj.name)
+		return validate_field_size(getattr(obj, attr), frappe.unscrub(attr), max_size, form_link)
 
 	else:
 		frappe.throw(_("{0} is mandatory for generating remittance payments, set the field and try again".format(frappe.unscrub(attr))))
 
-def validate_field_size(val, label, max_size):
+def validate_field_size(val, label, max_size, form_link=''):
 	''' check the size of the val '''
+	message = ''
+	if form_link:
+		message = ', Please change the details in the '+form_link
 	if len(cstr(val)) > max_size:
-		frappe.throw(_("{0} field is limited to size {1}".format(label, max_size)))
+		frappe.throw(_("{0} field is limited to size {1} {2}".format(label, max_size, message)))
 	return cstr(val)
 
 def get_primary_address(supplier):
