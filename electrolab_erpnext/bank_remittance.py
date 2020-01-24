@@ -201,9 +201,11 @@ def get_primary_address(supplier):
 	if not address_list:
 		frappe.throw(_('Please assign a billing address for the supplier {0} and try again').format(supplier))
 
-	addr = next(iter(address_list[0]))
-	for address, primary_addr in address_list:
+	for address, primary_addr in address_list.items():
 		if primary_addr:
+			addr = address
+			break
+		else:
 			addr = address
 
 	return frappe.get_cached_doc('Address', addr)
