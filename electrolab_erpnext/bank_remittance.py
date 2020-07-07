@@ -177,7 +177,7 @@ def validate_amount(val, max_int_size):
 
 def validate_information(obj, attr, max_size):
 	''' Checks if the information is not set in the system and is within the size '''
-	if hasattr(obj, attr):
+	if getattr(obj, attr, None):
 		form_link = get_link_to_form(obj.doctype, obj.name)
 		return validate_field_size(getattr(obj, attr), frappe.unscrub(attr), max_size, form_link)
 
