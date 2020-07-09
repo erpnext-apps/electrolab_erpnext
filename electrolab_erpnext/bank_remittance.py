@@ -85,7 +85,6 @@ def get_detail_row(ref_doc, payment_entry, company_email):
 	payment_date = format_date(payment_entry.posting_date)
 	payment_entry = frappe.get_cached_doc('Payment Entry', ref_doc.payment_entry)
 	supplier_bank_acc = frappe.get_cached_doc('Bank Account', ref_doc.bank_account)
-	supplier_bank = frappe.get_cached_doc('Bank', supplier_bank_acc.bank)
 	company_bank_acc_no = frappe.db.get_value("Bank Account", {'name': payment_entry.bank_account}, ['bank_account_no'])
 
 	addr = get_primary_address(ref_doc.supplier)
@@ -108,7 +107,7 @@ def get_detail_row(ref_doc, payment_entry, company_email):
 		beneficiary_code='',
 		beneficiary_name=sanitize_data(validate_information(payment_entry, "party", 160), ' '),
 		beneficiary_bank=sanitize_data(validate_information(supplier_bank_acc, "bank", 10)),
-		beneficiary_branch_code=cstr(validate_information(supplier_bank, "branch_code", 11)),
+		beneficiary_branch_code=cstr(validate_information(supplier_bank_acc, "branch_code", 11)),
 		beneficiary_acc_no=validate_information(supplier_bank_acc, "bank_account_no", 20),
 		location='',
 		print_location='',
