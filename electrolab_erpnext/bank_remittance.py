@@ -106,7 +106,7 @@ def get_detail_row(ref_doc, payment_entry, company_email):
 		bank_code_indicator='M',
 		beneficiary_code='',
 		beneficiary_name=sanitize_data(validate_information(payment_entry, "party", 160), ' '),
-		beneficiary_bank=sanitize_data(validate_information(supplier_bank_acc, "bank", 10)),
+		beneficiary_bank='',
 		beneficiary_branch_code=cstr(validate_information(supplier_bank_acc, "branch_code", 11)),
 		beneficiary_acc_no=validate_information(supplier_bank_acc, "bank_account_no", 20),
 		location='',
