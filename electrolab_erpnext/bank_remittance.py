@@ -163,6 +163,8 @@ def sanitize_data(val, replace_str=''):
 
 def format_date(val):
 	''' Convert a datetime object to DD/MM/YYYY format '''
+	if not val: return ''
+
 	return val.strftime("%d/%m/%Y")
 
 def validate_amount(val, max_int_size):

@@ -1,0 +1,1 @@
+electrolab_erpnext.patches.make_custom_fields_for_bank_remittance
