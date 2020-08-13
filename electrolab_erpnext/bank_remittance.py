@@ -120,7 +120,7 @@ def get_detail_row(ref_doc, payment_entry, company_email):
 		beneficiary_zipcode=validate_field_size(cstr(addr.pincode), "Pin Code", 6),
 		beneficiary_state=validate_field_size(cstr(addr.state), "Beneficiary State", 20),
 		beneficiary_email=cstr(email)[:255],
-		beneficiary_mobile=validate_field_size(cstr(addr.phone), "Beneficiary Mobile", 10),
+		beneficiary_mobile='',
 		payment_details_1='',
 		payment_details_2='',
 		payment_details_3='',
