@@ -83,7 +83,7 @@ def get_batch_row(doc, no_of_records, total_amount, product_code):
 def get_detail_row(ref_doc, payment_entry, company_email):
 
 	payment_date = format_date(payment_entry.posting_date)
-	payment_entry = frappe.get_cached_doc('Payment Entry', ref_doc.payment_entry)
+	payment_entry = frappe.get_cached_doc('Payment Entry', ref_doc.reference_name)
 	supplier_bank_acc = frappe.get_cached_doc('Bank Account', ref_doc.bank_account)
 	company_bank_acc_no = frappe.db.get_value("Bank Account", {'name': payment_entry.bank_account}, ['bank_account_no'])
 
@@ -93,7 +93,7 @@ def get_detail_row(ref_doc, payment_entry, company_email):
 
 	detail = OrderedDict(
 		record_identifier='D',
-		payment_ref_no=sanitize_data(ref_doc.payment_entry),
+		payment_ref_no=sanitize_data(ref_doc.reference_name),
 		payment_type=cstr(payment_entry.mode_of_payment)[:10],
 		amount=str(validate_amount(format(ref_doc.amount, '.2f'),13)),
 		payment_date=payment_date,
