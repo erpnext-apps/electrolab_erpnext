@@ -143,7 +143,7 @@ def get_advice_rows(payment_entry):
 		advice.append(cstr(record.total_amount))
 		advice.append('')
 		advice.append(cstr(record.outstanding_amount))
-		advice.append(record.reference_name)
+		advice.append(record.bill_no)
 		advice.append(format_date(record.due_date))
 		advice.append(payment_entry_date)
 		advice_rows.append("~".join(advice))
